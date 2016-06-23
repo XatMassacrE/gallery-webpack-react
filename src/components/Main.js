@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 require('normalize.css');
 require('../styles/app.scss');
 
@@ -17,7 +18,10 @@ function getRandomDeg() {
   return ((Math.random() > 0.5 ? '' : '-') + Math.ceil(Math.random() * 30));
 }
 class ImgFigure extends React.Component {
-  handleClick = (e) => {
+  constructor(props) {
+    super(props);
+  }
+  handleClick(e) {
     if (this.props.arrange.isCenter) {
       this.props.inverse();
     } else {
@@ -28,26 +32,26 @@ class ImgFigure extends React.Component {
   }
   render() {
     var styleObj = {};
-    // if (this.props.arrange.pos) {
-    //   styleObj = this.props.arrange.pos;
-    // }
-    // if (this.props.arrange.rotate) {
-    //   (['MozTransform', 'msTransform', 'WebkitTransform', 'transform']).forEach(function (value) {
-    //         styleObj[value] = 'rotate(' + this.props.arrange.rotate + 'deg)';
-    //       }.bind(this));
-    // }
+    if (this.props.arrange.pos) {
+      styleObj = this.props.arrange.pos;
+    }
+    if (this.props.arrange.rotate) {
+      (['MozTransform', 'msTransform', 'WebkitTransform', 'transform']).forEach(function (value) {
+            styleObj[value] = 'rotate(' + this.props.arrange.rotate + 'deg)';
+          }.bind(this));
+    }
 
-    // if (this.props.arrange.isCenter) {
-    //   styleObj.zIndex = 11;
-    // }
+    if (this.props.arrange.isCenter) {
+      styleObj.zIndex = 11;
+    }
     var imgFigureClassName = 'img-figure';
-    // imgFigureClassName += this.props.arrange.isInverse ? ' is-inverse' : '';
+    imgFigureClassName += this.props.arrange.isInverse ? ' is-inverse' : '';
     return (
-      <figure className={imgFigureClassName} style={styleObj} onClick={this.handleClick} >
+      <figure className={imgFigureClassName} style={styleObj} onClick={this.handleClick.bind(this)} >
         <img src={this.props.data.src} alt={this.props.data.title} />
         <figcaption>
           <h2 className='img-title'>{this.props.data.title}</h2>
-          <div className='img-back' onClick={this.handleClick}>
+          <div className='img-back' onClick={this.handleClick.bind(this)}>
             <p>
               {this.props.data.desc}
             </p>
@@ -57,8 +61,11 @@ class ImgFigure extends React.Component {
     );
   }
 }
-class ControllerUnit = React.Component {
-  handleClick = (e) => {
+class ControllerUnit extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  handleClick(e) {
     if (this.props.arrange.isCenter) {
       this.props.inverse();
     } else {
@@ -78,17 +85,46 @@ class ControllerUnit = React.Component {
       }
     }
     return (
-      <span className={controllerUnitClassName} onClick={this.handleClick}></span>
+      <span className={controllerUnitClassName} onClick={this.handleClick.bind(this)}></span>
     );
   }
 }
 class App extends React.Component {
-  center = (index) => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      imgsArrangeArr: [{
+        pos: {
+          left: 0,
+          right: 0
+        },
+        rotate: 0,
+        isInverse: false,
+        isCenter: false
+      }]
+    };
+    this.Constant = {
+      centerPos: {
+        left: 0,
+        right: 0
+      },
+      hPosRange: {
+        leftSecX: [0, 0],
+        rightSecX: [0, 0],
+        y: [0, 0]
+      },
+      vPosRange: {
+        x: [0, 0],
+        topY: [0, 0]
+      }
+    };
+  }
+  center(index) {
     return () => {
       this.rearrange(index);
     };
   }
-  inverse = (index) => {
+  inverse(index) {
     return () => {
       var imgsArrangeArr = this.state.imgsArrangeArr;
       imgsArrangeArr[index].isInverse = !imgsArrangeArr[index].isInverse;
@@ -97,33 +133,7 @@ class App extends React.Component {
       });
     }
   }
-  Constant = {
-    centerPos: {
-      left: 0,
-      right: 0,
-    },
-    hPosRange: {
-      leftSecX: [0, 0],
-      rightSecX: [0, 0],
-      y: [0, 0]
-    },
-    vPosRange: {
-      x: [0, 0],
-      topY: [0, 0],
-    }
-  }
-  state = {
-    imgsArrangeArr: [{
-      pos: {
-        left: 0,
-        right: 0
-      },
-      rotate: 0,
-      isInverse: false,
-      isCenter: false,
-    }],
-  }
-  rearrange = (centerIndex) => {
+  rearrange(centerIndex) {
     var imgsArrangeArr = this.state.imgsArrangeArr;
     var Constant = this.Constant;
     var centerPos = Constant.centerPos;
@@ -156,10 +166,10 @@ class App extends React.Component {
     imgsArrangeTopArr.forEach(function (value, index) {
       imgsArrangeTopArr[index] = {
         pos: {
-          top: getRangeRandom(vPosRangeTopY[0], vPosRangeTopY[1]),
-          left: getRangeRandom(vPosRangeX[0], vPosRangeX[1])
+          top: getRandomRange(vPosRangeTopY[0], vPosRangeTopY[1]),
+          left: getRandomRange(vPosRangeX[0], vPosRangeX[1])
         },
-        rotate: get30DegRandom(),
+        rotate: getRandomDeg(),
         isCenter: false
       };
     });
@@ -177,10 +187,10 @@ class App extends React.Component {
 
       imgsArrangeArr[i] = {
         pos: {
-          top: getRangeRandom(hPosRangeY[0], hPosRangeY[1]),
-          left: getRangeRandom(hPosRangeLORX[0], hPosRangeLORX[1])
+          top: getRandomRange(hPosRangeY[0], hPosRangeY[1]),
+          left: getRandomRange(hPosRangeLORX[0], hPosRangeLORX[1])
         },
-        rotate: get30DegRandom(),
+        rotate: getRandomDeg(),
         isCenter: false
       };
     }
@@ -210,7 +220,7 @@ class App extends React.Component {
 
     this.Constant.centerPos = {
       left: halfStageW - halfImgW,
-      top: halfStageH - halfImgH,
+      top: halfStageH - halfImgH
     };
 
     this.Constant.hPosRange.leftSecX[0] = -halfImgW;
@@ -236,14 +246,14 @@ class App extends React.Component {
         this.state.imgsArrangeArr[index] = {
           pos: {
             left: 0,
-            top: 0,
+            top: 0
           },
           rotate: 0,
           isInverse: false,
-          isCenter: false,
+          isCenter: false
         };
       }
-      imgFigures.push(<ImgFigure key={index} data={value} ref={'imgFigures' + index} arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)} center={this.center(index)} />);
+      imgFigures.push(<ImgFigure key={index} data={value} ref={'imgFigure' + index} arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)} center={this.center(index)} />);
       controllerUnits.push(<ControllerUnit key={index} arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)} center={this.center(index)} />);
     });
     return (
