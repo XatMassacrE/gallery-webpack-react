@@ -121,7 +121,7 @@ class App extends React.Component {
   }
   center(index) {
     return () => {
-      this.rearrange(index);
+      this.changeCenter(index);
     };
   }
   inverse(index) {
@@ -132,6 +132,25 @@ class App extends React.Component {
         imgsArrangeArr: imgsArrangeArr
       });
     }
+  }
+  changeCenter(index) {
+    var imgsArrangeArr = this.state.imgsArrangeArr;
+    var tempPos = imgsArrangeArr[index];
+    var Constant = this.Constant;
+    var centerPos = Constant.centerPos;
+    imgsArrangeArr.map((value, idx) => {
+      if (value.isCenter) {
+        imgsArrangeArr[idx] = tempPos;
+      }
+    });
+    imgsArrangeArr[index] = {
+      pos: centerPos,
+      rotate: 0,
+      isCenter: true
+    };
+    this.setState({
+      imgsArrangeArr: imgsArrangeArr
+    });
   }
   rearrange(centerIndex) {
     var imgsArrangeArr = this.state.imgsArrangeArr;
