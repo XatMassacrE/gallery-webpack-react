@@ -6,7 +6,7 @@ require('../styles/app.scss');
 var imageDatas = require('../imageData.json');
 
 imageDatas.map((item) => {
-  item.src = './src/images/' + item.fileName;
+  item.src = '/images/' + item.fileName;
 })
 
 // get a random value

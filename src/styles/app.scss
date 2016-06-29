@@ -40,8 +40,10 @@ html, body {
     .img-figure {
       position: absolute;
 
-      width: 320px;
-      height: 360px;
+      // width: 320px;
+      // height: 360px;
+      max-width: 320px;
+      height: auto;
       margin: 0;
       padding: 40px;
 
@@ -52,9 +54,9 @@ html, body {
       transform-origin: 0 50% 0;
       transform-style: preserve-3d;
       transition: transform .6s ease-in-out, left .6s ease-in-out, top .6s ease-in-out;
-
+      transform: scale(.5);
       &.is-inverse {
-          transform: translate(320px) rotateY(180deg);
+        transform: scale(1) rotateY(180deg);
       }
     }
 
@@ -62,10 +64,10 @@ html, body {
       text-align: center;
 
       .img-title {
-          margin: 20px 0 0 0;
+        margin: 20px 0 0 0;
 
-          color: #a7a0a2;
-          font-size: 16px;
+        color: #a7a0a2;
+        font-size: 16px;
       }
 
       .img-back {
