@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-require('normalize.css');
+
 require('../styles/app.scss');
 
 var imageDatas = require('../imageData.json');
 
 imageDatas.map((item) => {
-  item.src = '../images/' + item.fileName;
+  item.src = './src/images/' + item.fileName;
 })
 
 // get a random value

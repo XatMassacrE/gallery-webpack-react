@@ -1,23 +1,85 @@
-var path = require('path');
-var node_modules_dir = path.resolve(__dirname, 'node_modules');
+const path = require('path');
+const webpack = require('webpack');
+const HtmlwebpackPlugin = require('html-webpack-plugin');
 
-var config = {
-  entry: path.resolve(__dirname, 'src/components/Main.js'),
-  output: {
-    path: path.resolve(__dirname, 'dist/assets'),
-    filename: 'app.js'
+const ROOT_PATH = path.resolve(__dirname);
+const APP_PATH = path.resolve(ROOT_PATH, 'src');
+const BUILD_PATH = path.resolve(ROOT_PATH, 'build');
+const TEM_PATH = path.resolve(ROOT_PATH, 'template');
+
+const config = {
+  //devtool: 'eval-source-map',
+  entry: {
+    app: path.resolve(APP_PATH, 'index.js'),
+    mobile: path.resolve(APP_PATH, 'test.js')
+    // need to bundle package
+    // vendors: ['jquery', 'momnet']
   },
-  module: {
-    loaders: [{
-      test: /\.js$/,
+  output: {
+    path: BUILD_PATH,
+    filename: '[name].js',
+    publicPath: BUILD_PATH
+  },
 
-      // There is not need to run the loader through
-      // vendors
-      // 这里再也不需通过任何第三方来加载
-      exclude: [node_modules_dir],
-      loader: 'babel'
-    }]
+  plugins: [
+    //uglifyJs 
+    new webpack.optimize.UglifyJsPlugin({minimize: true}),
+    // pack entry--vendors
+    //new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
+    new HtmlwebpackPlugin({
+      title: 'gallery-react-webpack app',
+      template: path.resolve(TEM_PATH, 'index.html'),
+      filename: 'index.html',
+      chunks: ['app', 'venders'],
+      inject: 'body'
+    }),
+    new HtmlwebpackPlugin({
+      title: 'gallery-react-webpack test',
+      template: path.resolve(TEM_PATH, 'test.html'),
+      filename: 'test.html',
+      chunks: ['test', 'venders'],
+      inject: 'body'
+    }),
+    // put jquery... as a global variables
+    // new webpack.ProvidePlugin({
+    //   $: 'jquery',
+    //   jQuery: 'jquery',
+    //   'window.jQuery': 'jquery'
+    // })
+  ],
+  module: {
+    preloaders: [
+      {
+        test: /\.js?$/,
+        include:APP_PATH,
+        loader: 'jshint-loader'
+      }
+    ],
+    loaders: [
+      {
+        test: /\.scss$/,
+        loaders: ['style', 'css', 'sass'],
+        include: APP_PATH
+      },
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'file-loader?name=images/[hash].[ext]'
+      },
+      {
+        test: /\.js?$/,
+        loader: 'babel',
+        include: APP_PATH,
+        // loaders: ['react-hot', 'babel?presets[]=react,presets[]=es2015']
+        query: {
+          presets: ['react', 'es2015']
+        }
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      }
+    ]
   }
-};
+}
 
 module.exports = config;
