@@ -6,7 +6,7 @@ require('../styles/app.scss');
 var imageDatas = require('../imageData.json');
 
 imageDatas.map((item) => {
-  item.src = '/images/' + item.fileName;
+  item.src = 'images/' + item.fileName;
 })
 
 // get a random value
@@ -46,6 +46,7 @@ class ImgFigure extends React.Component {
     }
     var imgFigureClassName = 'img-figure';
     imgFigureClassName += this.props.arrange.isInverse ? ' is-inverse' : '';
+    imgFigureClassName += this.props.arrange.isCenter ? ' is-center' : '';
     return (
       <figure className={imgFigureClassName} style={styleObj} onClick={this.handleClick.bind(this)} >
         <img src={this.props.data.src} alt={this.props.data.title} />
@@ -170,6 +171,7 @@ class App extends React.Component {
 
     var imgsArrangeCenterArr = imgsArrangeArr.splice(centerIndex, 1);
 
+    console.log(centerPos);
     // 首先居中 centerIndex 的图片, 居中的 centerIndex 的图片不需要旋转
     imgsArrangeCenterArr[0] = {
       pos: centerPos,
@@ -237,9 +239,11 @@ class App extends React.Component {
     var halfImgW = Math.ceil(imgW / 2);
     var halfImgH = Math.ceil(imgH / 2);
 
+    var halfImgWCenter = 240;
+    var halfImgHCenter = 300;
     this.Constant.centerPos = {
-      left: halfStageW - halfImgW,
-      top: halfStageH - halfImgH
+      left: halfStageW - halfImgWCenter,
+      top: halfStageH - halfImgHCenter
     };
 
     this.Constant.hPosRange.leftSecX[0] = -halfImgW;

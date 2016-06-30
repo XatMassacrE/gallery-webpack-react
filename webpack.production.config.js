@@ -18,11 +18,11 @@ const config = {
   output: {
     path: BUILD_PATH,
     filename: '[name].js',
-    publicPath: BUILD_PATH
+    publicPath: ''
   },
 
   plugins: [
-    //uglifyJs 
+    //uglifyJs
     new webpack.optimize.UglifyJsPlugin({minimize: true}),
     // pack entry--vendors
     //new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),

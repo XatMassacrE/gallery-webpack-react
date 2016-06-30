@@ -40,10 +40,8 @@ html, body {
     .img-figure {
       position: absolute;
 
-      // width: 320px;
-      // height: 360px;
-      max-width: 320px;
-      height: auto;
+      width: 320px;
+      height: 360px;
       margin: 0;
       padding: 40px;
 
@@ -51,12 +49,27 @@ html, body {
 
       box-sizing: border-box;
       cursor: pointer;
-      transform-origin: 0 50% 0;
+      transform-origin: 50% 50% 0;
       transform-style: preserve-3d;
-      transition: transform .6s ease-in-out, left .6s ease-in-out, top .6s ease-in-out;
-      transform: scale(.5);
-      &.is-inverse {
-        transform: scale(1) rotateY(180deg);
+      // transition: transform .6s ease-in-out, left .6s ease-in-out, top .6s ease-in-out;
+      transition: 1s;
+      &.is-center {
+        width: 480px;
+        height: 520px;
+        transition: 1s;
+        img {
+          height: 400px;
+          width: 400px;
+        }
+      }
+      &.is-inverse{
+        transform-origin: 50% 50% 0;
+        transform: scale(.5) rotateY(180deg);
+      }
+      img {
+        transition: 1s;
+        height: 240px;
+        width: 240px;
       }
     }
 
@@ -81,7 +94,7 @@ html, body {
         overflow: auto;
 
         color: #a7a0a2;
-        font-size: 22px;
+        font-size: 40px;
         line-height: 1.25;
         text-align: left;
 
