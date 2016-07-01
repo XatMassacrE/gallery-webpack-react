@@ -172,18 +172,18 @@ class App extends React.Component {
     var imgsArrangeCenterArr = imgsArrangeArr.splice(centerIndex, 1);
 
     console.log(centerPos);
-    // 首先居中 centerIndex 的图片, 居中的 centerIndex 的图片不需要旋转
+    // set center pic property
     imgsArrangeCenterArr[0] = {
       pos: centerPos,
       rotate: 0,
       isCenter: true
     };
 
-    // 取出要布局上侧的图片的状态信息
+    // random a pic to layout top
     topImgSpliceIndex = Math.ceil(Math.random() * (imgsArrangeArr.length - topImgNum));
     imgsArrangeTopArr = imgsArrangeArr.splice(topImgSpliceIndex, topImgNum);
 
-    // 布局位于上侧的图片
+    // layout pic on top
     imgsArrangeTopArr.forEach(function (value, index) {
       imgsArrangeTopArr[index] = {
         pos: {
@@ -195,7 +195,7 @@ class App extends React.Component {
       };
     });
 
-    // 布局左右两侧的图片
+    // layout pics on both sides
     for (var i = 0, j = imgsArrangeArr.length, k = j / 2; i < j; i++) {
       var hPosRangeLORX = null;
 
