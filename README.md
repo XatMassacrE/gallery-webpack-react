@@ -1,4 +1,4 @@
 # gallery-webpack-react
-a photo gallery based on react with webpack
 
-you could click the picture to overturn to see desc
+## A photo gallery based on react with webpack
+## Click [here](http://xatmassacre.com/gallery-react-webpack/) to see demo
